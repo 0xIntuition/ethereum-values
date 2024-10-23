@@ -40,8 +40,6 @@ export default function Home() {
                 <p>You are not authenticated with Privy</p>
                 <div className="flex items-center gap-4">
                   <Button onClick_={login} cta="Login with Privy" />
-                  <span>or</span>
-                  <Button onClick_={connectWallet} cta="Connect only" />
                 </div>
               </>
             )}
@@ -71,19 +69,7 @@ export default function Home() {
                 <p className="mt-2">You are logged in with privy.</p>
                 <Button onClick_={connectWallet} cta="Connect another wallet" />
                 <Button onClick_={linkWallet} cta="Link another wallet" />
-                <textarea
-                  value={JSON.stringify(wallets, null, 2)}
-                  className="mt-2 w-full rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
-                  rows={JSON.stringify(wallets, null, 2).split('\n').length}
-                  disabled
-                />
-                <br />
-                <textarea
-                  value={JSON.stringify(user, null, 2)}
-                  className="mt-2 w-full rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
-                  rows={JSON.stringify(user, null, 2).split('\n').length}
-                  disabled
-                />
+
                 <br />
                 <Button onClick_={logout} cta="Logout from Privy" />
               </>

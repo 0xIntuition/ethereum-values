@@ -1,36 +1,26 @@
 import { gql } from "generated/gql";
 
-export const getTriples = gql(/* GraphQL */ `
-query GetTriples($predicateId: numeric!, $objectId: numeric!) {
-  triples(
-    where: { predicateId: { _eq: $predicateId }, objectId: { _eq: $objectId } }
-    order_by: [
-      { vault: { positionCount: desc }, counterVault: { positionCount: desc } }
-    ]
-  ) {
-    id
-    label
-    vault {
-      positionCount
-    }
-    counterVault {
-      positionCount
-    }
-  }
-}
-`);
-
 export const getTriplesWithMyPosition = gql(/* GraphQL */ `
-query GetTriplesWithMyPosition($predicateId: numeric!, $objectId: numeric!, $address: String) {
+query GetTriplesWithMyPosition($predicateId: numeric!, $subjectId: numeric!, $address: String) {
   triples(
-    where: { predicateId: { _eq: $predicateId }, objectId: { _eq: $objectId } }
+    where: { predicateId: { _eq: $predicateId }, subjectId: { _eq: $subjectId } }
     order_by: [
       { vault: { positionCount: desc }, counterVault: { positionCount: desc } }
     ]
   ) {
     id
     label
+    object {
+      label
+      value {
+        thing {
+          name
+          description
+        }
+      }
+    }
     vault {
+      id
       positionCount
       myPosition: positions(
         limit: 1
@@ -40,6 +30,7 @@ query GetTriplesWithMyPosition($predicateId: numeric!, $objectId: numeric!, $add
       }
     }
     counterVault {
+      id
       positionCount
       myPosition: positions(
         limit: 1

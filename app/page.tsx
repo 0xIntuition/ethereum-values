@@ -3,26 +3,25 @@
 import Button from 'components/Button';
 import SwitchNetwork from 'components/SwitchNetwork';
 import Triples from 'components/Triples';
-import { shorten } from 'lib/utils';
-import { useAccount, useDisconnect } from 'wagmi';
+import {shorten} from 'lib/utils';
+import {useAccount, useDisconnect} from 'wagmi';
 
-import { usePrivy, useWallets } from '@privy-io/react-auth';
-import { useSetActiveWallet } from '@privy-io/wagmi';
+import {usePrivy, useWallets} from '@privy-io/react-auth';
+import {useSetActiveWallet} from '@privy-io/wagmi';
 
-
-const MonoLabel = ({ label }: { label: string }) => {
+const MonoLabel = ({label}: {label: string}) => {
   return <span className="rounded-xl bg-slate-200 px-2 py-1 font-mono">{label}</span>;
 };
 
 export default function Home() {
   // Privy hooks
-  const { ready, user, authenticated, login, connectWallet, logout, linkWallet } = usePrivy();
-  const { wallets, ready: walletsReady } = useWallets();
+  const {ready, authenticated, login, connectWallet, logout, linkWallet} = usePrivy();
+  const {wallets, ready: walletsReady} = useWallets();
 
   // WAGMI hooks
-  const { address, isConnected, isConnecting, isDisconnected } = useAccount();
-  const { disconnect } = useDisconnect();
-  const { setActiveWallet } = useSetActiveWallet();
+  const {address, isConnected, isConnecting, isDisconnected} = useAccount();
+  const {disconnect} = useDisconnect();
+  const {setActiveWallet} = useSetActiveWallet();
 
   if (!ready) {
     return null;
@@ -90,7 +89,6 @@ export default function Home() {
                 </p>
 
                 <SwitchNetwork />
-
 
                 <h2 className="mt-6 text-2xl">useDisconnect</h2>
                 <Button onClick_={disconnect} cta="Disconnect from WAGMI" />

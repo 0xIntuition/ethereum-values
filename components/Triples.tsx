@@ -1,20 +1,21 @@
 'use client';
 
-import { useQuery } from "@apollo/client";
-import { abi } from "lib/abi";
-import { getTriplesWithMyPosition } from "lib/queries";
-import { parseEther } from "viem";
-import { useAccount, useWriteContract } from "wagmi";
-import Button from "./Button";
-import { usePrivy } from "@privy-io/react-auth";
+import {useQuery} from '@apollo/client';
+import {abi} from 'lib/abi';
+import {getTriplesWithMyPosition} from 'lib/queries';
+import {parseEther} from 'viem';
+import {useAccount, useWriteContract} from 'wagmi';
+
+import {usePrivy} from '@privy-io/react-auth';
+
+import Button from './Button';
 
 const Triples = () => {
-    const { login } = usePrivy();
-
+  const {login} = usePrivy();
   const account = useAccount();
-  const { writeContractAsync, isPending } = useWriteContract();
+  const {writeContractAsync, isPending} = useWriteContract();
 
-  const { data, error, loading } = useQuery(getTriplesWithMyPosition, {
+  const {data, error, loading} = useQuery(getTriplesWithMyPosition, {
     variables: {
       predicateId: 6639,
       subjectId: 535,
@@ -38,24 +39,23 @@ const Triples = () => {
   };
 
   return (
-    <div className="border-1 flex flex-col items-start gap-2 rounded border border-black bg-slate-100 p-3 mb-4">
+    <div className="border-1 mb-4 flex flex-col items-start gap-2 rounded border border-black bg-slate-100 p-3">
       <h1 className="text-4xl font-bold">Ethereum values</h1>
       {loading && <div>Loading...</div>}
       {error && <div>Error loading values: {error.message}</div>}
       {data && (
         <>
           {data.triples.map((triple) => (
-              <div key={triple.id} className="mb-4">
-                <h2 className="text-xl font-bold">{triple.object?.label}</h2>
-                <p>{triple.object?.value?.thing?.description}</p>
-                <p>Votes: {triple.vault?.positionCount}</p>
-                <p>{triple.vault?.myPosition?.length !== 0 && 'Voted for'}</p>
-                <Button
-                  disabled={isPending}
-                  cta="Vote for"
-                  onClick_={() => handleDepositTriple(triple.vault?.id)}
-                />
-
+            <div key={triple.id} className="mb-4">
+              <h2 className="text-xl font-bold">{triple.object?.label}</h2>
+              <p>{triple.object?.value?.thing?.description}</p>
+              <p>Votes: {triple.vault?.positionCount}</p>
+              <p>{triple.vault?.myPosition?.length !== 0 && 'Voted for'}</p>
+              <Button
+                disabled={isPending}
+                cta="Vote for"
+                onClick_={() => handleDepositTriple(triple.vault?.id)}
+              />
             </div>
           ))}
         </>

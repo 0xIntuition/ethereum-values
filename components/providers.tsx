@@ -1,18 +1,26 @@
 'use client';
 
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {http} from 'viem';
-import {mainnet, sepolia} from 'viem/chains';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { http } from 'viem';
+import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
 
-import type {PrivyClientConfig} from '@privy-io/react-auth';
-import {PrivyProvider} from '@privy-io/react-auth';
-import {WagmiProvider, createConfig} from '@privy-io/wagmi';
+import type { PrivyClientConfig } from '@privy-io/react-auth';
+import { PrivyProvider } from '@privy-io/react-auth';
+import { WagmiProvider, createConfig } from '@privy-io/wagmi';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'https://api.i7n.dev/v1/graphql',
+  cache: new InMemoryCache(),
+});
 
 const queryClient = new QueryClient();
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, sepolia],
+  chains: [base, baseSepolia, mainnet, sepolia],
   transports: {
+    [base.id]: http(),
+    [baseSepolia.id]: http(),
     [mainnet.id]: http(),
     [sepolia.id]: http(),
   },
@@ -30,7 +38,7 @@ const privyConfig: PrivyClientConfig = {
   },
 };
 
-export default function Providers({children}: {children: React.ReactNode}) {
+export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <PrivyProvider
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -39,11 +47,13 @@ export default function Providers({children}: {children: React.ReactNode}) {
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
       config={privyConfig}
     >
-      <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={wagmiConfig} reconnectOnMount={false}>
-          {children}
-        </WagmiProvider>
-      </QueryClientProvider>
+      <ApolloProvider client={client}>
+        <QueryClientProvider client={queryClient}>
+          <WagmiProvider config={wagmiConfig} reconnectOnMount={false}>
+            {children}
+          </WagmiProvider>
+        </QueryClientProvider>
+      </ApolloProvider>
     </PrivyProvider>
   );
 }

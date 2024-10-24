@@ -25,7 +25,6 @@ cp .env.local.example .env.local
 
 # Add your Privy App ID to .env.local
 NEXT_PUBLIC_PRIVY_APP_ID=<your-privy-app-id>
-NEXT_PUBLIC_ALCHEMY_API_KEY=<your-alchemy-api-key>
 ```
 
 ## Building locally

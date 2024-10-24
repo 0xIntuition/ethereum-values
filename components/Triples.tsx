@@ -82,7 +82,7 @@ const Triples = () => {
                   >
                     👍 {triple.vault?.positionCount}{' '}
                   </button>
-                  <div className="gap-1">
+                  <div className="flex flex-row">
                     {triple.vault?.myPosition.map((position) => (
                       <AccountImage
                         key={position.accountId}
@@ -120,7 +120,7 @@ const Triples = () => {
                   >
                     👎 {triple.counterVault?.positionCount}{' '}
                   </button>
-                  <div className="gap-1">
+                  <div className="flex flex-row">
                     {triple.counterVault?.myPosition.map((position) => (
                       <AccountImage
                         key={position.accountId}

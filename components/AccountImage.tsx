@@ -1,6 +1,6 @@
+import {blo} from 'blo';
 import React from 'react';
-import { blo } from 'blo';
-import { Address } from 'viem';
+import type {Address} from 'viem';
 
 interface AccountImageProps {
   id: Address;
@@ -8,7 +8,7 @@ interface AccountImageProps {
   image?: string | null;
 }
 
-export const AccountImage: React.FC<AccountImageProps> = ({ id, label, image }) => {
+export const AccountImage: React.FC<AccountImageProps> = ({id, label, image}) => {
   return (
     <img
       src={image || blo(id)}

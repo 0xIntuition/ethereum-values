@@ -1,10 +1,11 @@
 'use client';
 
 import Triples from 'components/Triples';
-import { usePrivy } from '@privy-io/react-auth';
+
+import {usePrivy} from '@privy-io/react-auth';
 
 export default function Home() {
-  const { ready } = usePrivy();
+  const {ready} = usePrivy();
 
   if (!ready) {
     return null;

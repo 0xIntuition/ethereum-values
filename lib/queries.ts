@@ -1,13 +1,12 @@
-import {gql} from 'generated/gql';
+import { gql } from 'generated/gql';
 
 export const getTriplesWithMyPosition = gql(/* GraphQL */ `
   query GetTriplesWithMyPosition($predicateId: numeric!, $subjectId: numeric!, $address: String) {
     triples(
-      where: {predicateId: {_eq: $predicateId}, subjectId: {_eq: $subjectId}}
-      order_by: [{vault: {positionCount: desc}, counterVault: {positionCount: desc}}]
+      where: {predicate_id: {_eq: $predicateId}, subject_id: {_eq: $subjectId}}
+      order_by: [{vault: {position_count: desc}, counter_vault: {position_count: desc}}]
     ) {
       id
-      label
       object {
         label
         value {
@@ -19,36 +18,36 @@ export const getTriplesWithMyPosition = gql(/* GraphQL */ `
       }
       vault {
         id
-        positionCount
-        positions(limit: 10, where: {accountId: {_neq: $address}}) {
-          accountId
+        position_count
+        positions(limit: 10, where: {account_id: {_neq: $address}}) {
+          account_id
           account {
             image
             label
           }
         }
-        myPosition: positions(limit: 1, where: {accountId: {_eq: $address}}) {
+        myPosition: positions(limit: 1, where: {account_id: {_eq: $address}}) {
           shares
-          accountId
+          account_id
           account {
             image
             label
           }
         }
       }
-      counterVault {
+      counter_vault {
         id
-        positionCount
-        positions(limit: 10, where: {accountId: {_neq: $address}}) {
-          accountId
+        position_count
+        positions(limit: 10, where: {account_id: {_neq: $address}}) {
+          account_id
           account {
             image
             label
           }
         }
-        myPosition: positions(limit: 1, where: {accountId: {_eq: $address}}) {
+        myPosition: positions(limit: 1, where: {account_id: {_eq: $address}}) {
           shares
-          accountId
+          account_id
           account {
             image
             label

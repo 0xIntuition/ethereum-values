@@ -1,22 +1,22 @@
 'use client';
 
-import {useQuery} from '@apollo/client';
-import {abi} from 'lib/abi';
-import {getTriplesWithMyPosition} from 'lib/queries';
-import {parseEther} from 'viem';
-import type {Address} from 'viem';
-import {useAccount, useWriteContract} from 'wagmi';
+import { useQuery } from '@apollo/client';
+import { abi } from 'lib/abi';
+import { getTriplesWithMyPosition } from 'lib/queries';
+import { parseEther } from 'viem';
+import type { Address } from 'viem';
+import { useAccount, useWriteContract } from 'wagmi';
 
-import {usePrivy} from '@privy-io/react-auth';
+import { usePrivy } from '@privy-io/react-auth';
 
-import {AccountImage} from './AccountImage';
+import { AccountImage } from './AccountImage';
 
 const Triples = () => {
-  const {login} = usePrivy();
+  const { login } = usePrivy();
   const account = useAccount();
-  const {writeContractAsync, isPending} = useWriteContract();
+  const { writeContractAsync, isPending } = useWriteContract();
 
-  const {data, error, loading} = useQuery(getTriplesWithMyPosition, {
+  const { data, error, loading } = useQuery(getTriplesWithMyPosition, {
     variables: {
       predicateId: 6639,
       subjectId: 535,
@@ -61,7 +61,7 @@ const Triples = () => {
         <>
           {data.triples.map((triple) => {
             const myPositionFor = triple.vault?.myPosition?.length !== 0;
-            const myPositionAgainst = triple.counterVault?.myPosition?.length !== 0;
+            const myPositionAgainst = triple.counter_vault?.myPosition?.length !== 0;
 
             return (
               <div key={triple.id} className="mb-4">
@@ -70,9 +70,8 @@ const Triples = () => {
 
                 <div className="mb-2 flex gap-2">
                   <button
-                    className={`rounded border border-green-800 px-4 py-1 ${
-                      myPositionFor ? 'bg-green-800 text-white' : 'bg-green-200 text-black'
-                    } disabled:cursor-not-allowed disabled:opacity-50`}
+                    className={`rounded border border-green-800 px-4 py-1 ${myPositionFor ? 'bg-green-800 text-white' : 'bg-green-200 text-black'
+                      } disabled:cursor-not-allowed disabled:opacity-50`}
                     disabled={isPending || myPositionAgainst}
                     onClick={() =>
                       myPositionFor
@@ -80,13 +79,13 @@ const Triples = () => {
                         : handleDepositTriple(triple.vault?.id)
                     }
                   >
-                    👍 {triple.vault?.positionCount}{' '}
+                    👍 {triple.vault?.position_count}{' '}
                   </button>
                   <div className="flex flex-row">
                     {triple.vault?.myPosition.map((position) => (
                       <AccountImage
-                        key={position.accountId}
-                        id={position.accountId as Address}
+                        key={position.account_id}
+                        id={position.account_id as Address}
                         image={position.account?.image}
                         label={position.account?.label}
                       />
@@ -94,8 +93,8 @@ const Triples = () => {
 
                     {triple.vault?.positions.map((position) => (
                       <AccountImage
-                        key={position.accountId}
-                        id={position.accountId as Address}
+                        key={position.account_id}
+                        id={position.account_id as Address}
                         image={position.account?.image}
                         label={position.account?.label}
                       />
@@ -105,34 +104,33 @@ const Triples = () => {
 
                 <div className="flex gap-2">
                   <button
-                    className={`rounded border border-red-800 px-4 py-1 ${
-                      myPositionAgainst ? 'bg-red-800 text-white' : 'bg-red-100 text-black'
-                    } disabled:cursor-not-allowed disabled:opacity-50 `}
+                    className={`rounded border border-red-800 px-4 py-1 ${myPositionAgainst ? 'bg-red-800 text-white' : 'bg-red-100 text-black'
+                      } disabled:cursor-not-allowed disabled:opacity-50 `}
                     disabled={isPending || myPositionFor}
                     onClick={() =>
                       myPositionAgainst
                         ? handleRedeemTriple(
-                            triple.counterVault?.id,
-                            triple.counterVault?.myPosition[0].shares,
-                          )
-                        : handleDepositTriple(triple.counterVault?.id)
+                          triple.counter_vault?.id,
+                          triple.counter_vault?.myPosition[0].shares,
+                        )
+                        : handleDepositTriple(triple.counter_vault?.id)
                     }
                   >
-                    👎 {triple.counterVault?.positionCount}{' '}
+                    👎 {triple.counter_vault?.position_count}{' '}
                   </button>
                   <div className="flex flex-row">
-                    {triple.counterVault?.myPosition.map((position) => (
+                    {triple.counter_vault?.myPosition.map((position) => (
                       <AccountImage
-                        key={position.accountId}
-                        id={position.accountId as Address}
+                        key={position.account_id}
+                        id={position.account_id as Address}
                         image={position.account?.image}
                         label={position.account?.label}
                       />
                     ))}
-                    {triple.counterVault?.positions.map((position) => (
+                    {triple.counter_vault?.positions.map((position) => (
                       <AccountImage
-                        key={position.accountId}
-                        id={position.accountId as Address}
+                        key={position.account_id}
+                        id={position.account_id as Address}
                         image={position.account?.image}
                         label={position.account?.label}
                       />
